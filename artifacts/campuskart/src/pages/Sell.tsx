@@ -1,28 +1,34 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useLocation } from "wouter";
-import { UploadCloud, CheckCircle2, AlertCircle } from "lucide-react";
+import { UploadCloud, CheckCircle2, AlertCircle, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
+import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription
 } from "@/components/ui/form";
-// FormLabel used inside FormField contexts only; standalone label for image upload uses native <label>
-import { 
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue 
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useShop } from "@/context/ShopContext";
 import { useToast } from "@/hooks/use-toast";
 
+const PRICE_SUGGESTIONS: Record<string, { min: number; max: number; tip: string }> = {
+  Books: { min: 150, max: 600, tip: "Textbooks sell fastest at 40–60% of MRP" },
+  Notes: { min: 80, max: 300, tip: "Handwritten notes go for ₹80–₹300 per subject" },
+  Gadgets: { min: 300, max: 30000, tip: "Electronics: price based on age and condition" },
+  Accessories: { min: 100, max: 1500, tip: "Accessories under ₹500 sell within 2 days!" },
+};
+
 const sellSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
   price: z.coerce.number().min(1, "Price must be greater than 0"),
   category: z.string().min(1, "Please select a category"),
-  condition: z.enum(["New", "Used"], { required_error: "Please select condition" }),
+  condition: z.enum(["New", "Like New", "Used"], { required_error: "Please select condition" }),
   description: z.string().min(10, "Description must be at least 10 characters"),
   location: z.string().min(3, "Please specify meetup location on campus"),
 });
@@ -48,26 +54,24 @@ export default function Sell() {
     },
   });
 
+  const selectedCategory = useWatch({ control: form.control, name: "category" });
+  const enteredPrice = useWatch({ control: form.control, name: "price" });
+  const suggestion = PRICE_SUGGESTIONS[selectedCategory];
+
+  const isPriceOutOfRange = suggestion && enteredPrice > 0 &&
+    (enteredPrice < suggestion.min * 0.5 || enteredPrice > suggestion.max * 1.5);
+
   const onSubmit = async (data: SellFormValues) => {
     setIsSubmitting(true);
-    // Simulate API delay
     await new Promise(r => setTimeout(r, 1500));
-    
-    addProduct({
-      ...data,
-      seller: "Current User" // Mock logged in user
-    });
-    
+    addProduct({ ...data, seller: "Current User" });
     setIsSubmitting(false);
     setIsSuccess(true);
     toast({
-      title: "Product Listed Successfully!",
+      title: "Product Listed Successfully! 🎉",
       description: "Your item is now live on CampusKart.",
     });
-    
-    setTimeout(() => {
-      setLocation("/products");
-    }, 2000);
+    setTimeout(() => setLocation("/products"), 2000);
   };
 
   if (isSuccess) {
@@ -89,7 +93,6 @@ export default function Sell() {
 
   return (
     <div className="relative min-h-screen py-12 bg-muted/20">
-      {/* Background Decorative */}
       <div className="absolute top-0 right-0 -z-10 w-1/3 h-1/2 bg-primary/5 blur-[100px] rounded-bl-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 -z-10 w-1/3 h-1/2 bg-accent/5 blur-[100px] rounded-tr-full pointer-events-none" />
 
@@ -102,7 +105,7 @@ export default function Sell() {
         <div className="bg-white rounded-3xl border border-border shadow-sm p-6 sm:p-10">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              
+
               {/* Image Upload Mock */}
               <div className="space-y-3">
                 <label className="text-base font-medium text-foreground">Product Image</label>
@@ -132,20 +135,6 @@ export default function Sell() {
 
                 <FormField
                   control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price (₹)</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder="450" className="h-12 rounded-xl" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="category"
                   render={({ field }) => (
                     <FormItem>
@@ -157,17 +146,48 @@ export default function Sell() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Books">Books & Textbooks</SelectItem>
-                          <SelectItem value="Notes">Study Notes</SelectItem>
-                          <SelectItem value="Gadgets">Gadgets & Tech</SelectItem>
-                          <SelectItem value="Accessories">Accessories</SelectItem>
+                          <SelectItem value="Books">📚 Books & Textbooks</SelectItem>
+                          <SelectItem value="Notes">📝 Study Notes</SelectItem>
+                          <SelectItem value="Gadgets">💻 Gadgets & Tech</SelectItem>
+                          <SelectItem value="Accessories">🎒 Accessories</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price (₹)</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="450" className="h-12 rounded-xl" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+
+              {/* 🧠 Smart Price Suggestion */}
+              {suggestion && (
+                <div className={`p-4 rounded-xl flex gap-3 text-sm border transition-all ${isPriceOutOfRange ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-blue-50 border-blue-200 text-blue-800'}`}>
+                  <Lightbulb className="w-5 h-5 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold mb-0.5">
+                      {isPriceOutOfRange ? '⚠️ Price looks unusual' : '🧠 Smart Price Suggestion'}
+                    </p>
+                    <p>
+                      Recommended for <strong>{selectedCategory}</strong>:{" "}
+                      <strong>₹{suggestion.min.toLocaleString('en-IN')} – ₹{suggestion.max.toLocaleString('en-IN')}</strong>
+                    </p>
+                    <p className="text-xs mt-1 opacity-80">{suggestion.tip}</p>
+                  </div>
+                </div>
+              )}
 
               <FormField
                 control={form.control}
@@ -179,20 +199,16 @@ export default function Sell() {
                       <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="flex gap-4"
+                        className="flex gap-3 flex-wrap"
                       >
-                        <FormItem className="flex items-center space-x-3 space-y-0 rounded-xl border border-border p-4 flex-1 cursor-pointer hover:bg-muted/20 transition-colors">
-                          <FormControl>
-                            <RadioGroupItem value="New" />
-                          </FormControl>
-                          <FormLabel className="font-normal cursor-pointer w-full">New (Unused)</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0 rounded-xl border border-border p-4 flex-1 cursor-pointer hover:bg-muted/20 transition-colors">
-                          <FormControl>
-                            <RadioGroupItem value="Used" />
-                          </FormControl>
-                          <FormLabel className="font-normal cursor-pointer w-full">Used</FormLabel>
-                        </FormItem>
+                        {(["New", "Like New", "Used"] as const).map((cond) => (
+                          <FormItem key={cond} className="flex items-center space-x-2 space-y-0 rounded-xl border border-border p-3.5 flex-1 min-w-[100px] cursor-pointer hover:bg-muted/20 transition-colors">
+                            <FormControl>
+                              <RadioGroupItem value={cond} />
+                            </FormControl>
+                            <FormLabel className="font-normal cursor-pointer w-full text-sm">{cond}</FormLabel>
+                          </FormItem>
+                        ))}
                       </RadioGroup>
                     </FormControl>
                     <FormMessage />
@@ -207,10 +223,10 @@ export default function Sell() {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea 
-                        placeholder="Describe the item, any flaws, reasons for selling..." 
-                        className="min-h-[120px] rounded-xl resize-none" 
-                        {...field} 
+                      <Textarea
+                        placeholder="Describe the item, any flaws, reasons for selling..."
+                        className="min-h-[120px] rounded-xl resize-none"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -239,9 +255,9 @@ export default function Sell() {
               </div>
 
               <div className="pt-4 border-t border-border flex justify-end">
-                <Button 
-                  type="submit" 
-                  size="lg" 
+                <Button
+                  type="submit"
+                  size="lg"
                   className="w-full sm:w-auto h-14 px-8 rounded-xl text-base shadow-lg shadow-primary/20"
                   disabled={isSubmitting}
                 >

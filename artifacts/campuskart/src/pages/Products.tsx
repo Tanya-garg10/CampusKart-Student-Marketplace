@@ -27,7 +27,7 @@ export default function Products() {
   const [priceRange, setPriceRange] = useState([5000]);
 
   const categories = ["All", "Books", "Notes", "Gadgets", "Accessories"];
-  const conditions = ["All", "New", "Used"];
+  const conditions = ["All", "New", "Like New", "Used"];
 
   const filteredProducts = useMemo(() => {
     return products.filter(p => {
