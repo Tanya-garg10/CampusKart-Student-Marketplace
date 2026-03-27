@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "CampusKart – Student Marketplace"
+version = "1.0.0"
+id = "artifacts/campuskart"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18618
+
+[services.development]
+run = "pnpm --filter @workspace/campuskart run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/campuskart", "run", "build" ]
+publicDir = "artifacts/campuskart/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18618"
+BASE_PATH = "/"

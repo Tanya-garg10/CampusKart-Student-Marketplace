@@ -1,0 +1,80 @@
+Build a modern, responsive e-commerce website called “CampusKart – Student Marketplace”.
+
+Concept:
+CampusKart is a student-focused platform that combines features of OLX and Amazon, where students can buy and sell books, notes, gadgets, and study essentials within their college or nearby campuses at affordable prices.
+
+Design Requirements:
+- Clean, modern UI with a student-friendly design
+- Use soft colors, rounded cards, and smooth hover effects
+- Fully responsive (mobile, tablet, desktop)
+- Professional and internship-ready look
+
+Pages to include:
+
+1. Home Page
+- Hero section with title: “CampusKart – Buy, Sell, Save on Campus”
+- Subtitle explaining student marketplace concept
+- CTA buttons: “Shop Now” and “Start Selling”
+- Featured categories (Books, Notes, Gadgets, Accessories)
+- Featured products section
+- Stats section (5K+ students, 1K+ products, 95% satisfaction)
+- Testimonials section
+- Footer
+
+2. Product Listing Page
+- Grid layout of products
+- Each product card should include:
+  image, title, price, condition (New/Used), seller name
+- Search bar
+- Filters:
+  - Category
+  - Price range
+  - Location (Nearby college)
+
+3. Product Detail Page
+- Large product image
+- Title, price, full description
+- Seller details
+- Product condition
+- Buttons: “Add to Cart” and “Chat with Seller”
+
+4. Sell Product Page
+- Form to upload product:
+  image, title, price, category, condition, description, location
+- Submit button
+
+5. Cart Page
+- List of selected products
+- Total price calculation
+- Checkout button (UI only)
+
+6. Wishlist Page
+- Saved products
+
+7. Contact / Help Page
+- FAQ section
+- Contact form
+
+Core Features:
+- Product listing system
+- Search and filter functionality
+- Location-based filtering (nearby students)
+- Chat with seller UI
+- Wishlist functionality
+- Add to cart UI
+- Responsive design
+
+Tech Stack:
+- React (or Next.js)
+- Tailwind CSS
+- Use reusable components
+- Dummy data for products (books, notes, laptops, calculators, headphones)
+
+Extra Touch (important for impressing judges):
+- “Top Deals on Campus” section
+- “Recently Added” section
+- Clean navbar with logo and menu
+- Smooth animations and transitions
+
+Goal:
+Create a complete frontend e-commerce experience that looks professional, clean, and ready for internship submission.

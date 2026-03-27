@@ -16,6 +16,29 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## Artifacts
+
+### `artifacts/campuskart` (CampusKart – Student Marketplace)
+
+A full-featured frontend e-commerce marketplace for students built with React + Vite + Tailwind CSS.
+
+**Pages:**
+- `/` — Home page (hero, categories, featured products, stats, testimonials, footer)
+- `/products` — Product listing with search, filters (category, price, location)
+- `/products/:id` — Product detail with seller info, add to cart, chat with seller
+- `/sell` — Sell product form with image upload, validation
+- `/cart` — Cart with quantity controls and order summary
+- `/wishlist` — Saved products
+- `/contact` — FAQ accordion and contact form
+
+**Tech:**
+- React + Vite, Tailwind CSS, shadcn/ui components
+- wouter for routing
+- react-hook-form + zod for form validation
+- framer-motion for animations
+- React Context (ShopContext) for cart and wishlist state management
+- Dummy data (12 products: books, notes, gadgets, accessories)
+
 ## Structure
 
 ```text

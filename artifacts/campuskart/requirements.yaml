@@ -1,0 +1,19 @@
+packages:
+  "framer-motion": "For smooth page transitions and beautiful staggered entry animations"
+  "clsx": "For conditional tailwind class joining"
+  "tailwind-merge": "For merging tailwind classes safely"
+  "@hookform/resolvers": "Zod validation for react-hook-form in the Sell page"
+  "react-hook-form": "For robust form handling in Sell and Contact pages"
+
+images:
+  - path: "artifacts/campuskart/public/images/hero-mesh.png"
+    description: "A soft, abstract gradient mesh background using gentle pastel colors like light purple, soft blue, and warm peach. Highly blurred and ethereal."
+    aspect_ratio: "16:9"
+  - path: "artifacts/campuskart/public/images/auth-bg.png"
+    description: "A clean, modern geometric pattern with subtle 3D shapes floating over a light background."
+    aspect_ratio: "1:1"
+
+notes:
+  - This is a pure frontend application with simulated backend using React Context.
+  - All data modifications (Cart, Wishlist, adding Products) will persist only in memory during the session.
+  - Using Lucide React for all iconography.
