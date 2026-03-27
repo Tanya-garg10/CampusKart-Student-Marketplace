@@ -2,6 +2,7 @@ import { useRoute } from "wouter";
 import { useShop } from "@/context/ShopContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AIRecommendations } from "@/components/AIRecommendations";
 import {
   Heart, ShoppingCart, MessageCircle, MapPin, ShieldCheck, Star,
   ChevronLeft, Share2, Flame, Navigation, GraduationCap, Clock
@@ -248,6 +249,9 @@ export default function ProductDetail() {
             </div>
           </div>
         )}
+
+        {/* AI Recommendations */}
+        <AIRecommendations currentProduct={product} variant="detail" maxItems={4} />
       </div>
     </div>
   );

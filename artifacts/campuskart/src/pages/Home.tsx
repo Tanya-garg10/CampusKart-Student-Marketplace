@@ -4,6 +4,7 @@ import { BookOpen, Laptop, Headphones, Backpack, ArrowRight, ShieldCheck, Zap, U
 import { Button } from "@/components/ui/button";
 import { useShop } from "@/context/ShopContext";
 import { ProductCard } from "@/components/ProductCard";
+import { AIRecommendations } from "@/components/AIRecommendations";
 
 const testimonials = [
   { name: "Arjun Mehta", college: "IIT Delhi", text: "Sold my old textbooks in 2 days! CampusKart is way better than posting in WhatsApp groups.", avatar: "A" },
@@ -250,6 +251,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* AI Recommendations */}
+      <AIRecommendations variant="home" maxItems={4} />
 
     </div>
   );

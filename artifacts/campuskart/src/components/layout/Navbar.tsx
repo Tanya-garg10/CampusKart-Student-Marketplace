@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { ShoppingCart, Heart, Menu, PlusCircle, Store, Sun, Moon } from "lucide-react";
+import { ShoppingCart, Heart, Menu, PlusCircle, Store, Sun, Moon, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useShop } from "@/context/ShopContext";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,10 @@ export function Navbar() {
       </Link>
       <Link href="/products" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/products' ? 'text-primary' : 'text-foreground/70'}`}>
         Browse Products
+      </Link>
+      <Link href="/map" className={`text-sm font-medium transition-colors hover:text-primary flex items-center gap-1.5 ${location === '/map' ? 'text-primary' : 'text-foreground/70'}`}>
+        <Map className="w-3.5 h-3.5" />
+        Campus Map
       </Link>
       <Link href="/contact" className={`text-sm font-medium transition-colors hover:text-primary ${location === '/contact' ? 'text-primary' : 'text-foreground/70'}`}>
         Contact & Help

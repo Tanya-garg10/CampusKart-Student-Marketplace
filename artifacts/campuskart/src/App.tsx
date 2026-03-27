@@ -14,6 +14,7 @@ import Sell from "@/pages/Sell";
 import Cart from "@/pages/Cart";
 import Wishlist from "@/pages/Wishlist";
 import Contact from "@/pages/Contact";
+import MapPage from "@/pages/Map";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/cart" component={Cart} />
       <Route path="/wishlist" component={Wishlist} />
       <Route path="/contact" component={Contact} />
+      <Route path="/map" component={MapPage} />
       <Route component={NotFound} />
     </Switch>
   );
