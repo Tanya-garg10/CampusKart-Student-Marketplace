@@ -1,6 +1,6 @@
 {
   "buildCommand": "pnpm --filter @workspace/campuskart run build",
-  "outputDirectory": "artifacts/campuskart/dist/public",
+  "outputDirectory": "artifacts/campuskart/dist",
   "installCommand": "pnpm install",
   "framework": null,
   "rewrites": [
